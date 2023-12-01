@@ -43,7 +43,12 @@ class TransformersLLM(LMTPModel):
             self.model = AutoModelForCausalLM.from_pretrained(self.model_identifier, **self.model_args)
         
         # compile model
-        self.model = torch.compile(self.model)
+        # self.model = torch.compile(self.model)
+        if "compile" in self.model_args:
+            if self.model_args["compile"]:
+                self.model = torch.compile(self.model)
+                if not self.silent:
+                    print("[Compiled", self.model_identifier, "]", flush=True)
         if not self.silent:
             print("[", self.model_identifier, " ready on device ", self.model.device, 
         flush=True, sep="", end="]\n")

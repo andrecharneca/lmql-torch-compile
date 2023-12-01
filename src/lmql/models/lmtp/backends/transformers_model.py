@@ -29,7 +29,7 @@ class TransformersLLM(LMTPModel):
         self.loader = kwargs.pop("loader", "transformers")
 
         self.max_batch_size = kwargs.pop("batch_size", 32)
-
+        self.compile = kwargs.pop("compile", False)
         self.silent = kwargs.pop("silent", False)
 
         if not self.silent:
@@ -44,11 +44,10 @@ class TransformersLLM(LMTPModel):
         
         # compile model
         # self.model = torch.compile(self.model)
-        if "compile" in self.model_args:
-            if self.model_args["compile"]:
-                self.model = torch.compile(self.model)
-                if not self.silent:
-                    print("[Compiled", self.model_identifier, "]", flush=True)
+        if self.compile:
+            self.model = torch.compile(self.model)
+            if not self.silent:
+                print("[Compiled", self.model_identifier, "]", flush=True)
         if not self.silent:
             print("[", self.model_identifier, " ready on device ", self.model.device, 
         flush=True, sep="", end="]\n")

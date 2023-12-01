@@ -62,7 +62,8 @@ class TransformersLLM(LMTPModel):
         else:
             from transformers import AutoModelForCausalLM            
             self.model = AutoModelForCausalLM.from_pretrained(self.model_identifier, **self.model_args)
-        
+        # added line
+        self.model = torch.compile(self.model)
         if self.loader == 'awq':
             self.device = self.model.model.device
         else:

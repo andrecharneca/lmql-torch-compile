@@ -25,11 +25,11 @@ version_info = {}
 class TransformersLLM(LMTPModel):
     def __init__(self, model_identifier, **kwargs):
         self.model_identifier = model_identifier
+        self.compile = kwargs.pop("compile", False)
         self.model_args = kwargs
         self.loader = kwargs.pop("loader", "transformers")
 
         self.max_batch_size = kwargs.pop("batch_size", 32)
-        self.compile = kwargs.pop("compile", False)
         self.silent = kwargs.pop("silent", False)
 
         if not self.silent:
